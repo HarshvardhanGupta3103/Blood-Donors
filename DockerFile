@@ -1,80 +1,20 @@
-# # Use an official Python runtime as a parent image
-# FROM python:3.9-slim
-
-# # Set the working directory in the container
-# WORKDIR /app
-
-# # Copy the current directory contents into the container at /app
-# COPY . /app
-
-# # Install any needed packages specified in requirements.txt
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# # Make port 80 available to the world outside this container
-# EXPOSE 80
-
-# # Define environment variable
-# ENV NAME World
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
-
-# # Set the command to run when the container starts
-# CMD ["python", "app.py"]
-
-# # Set the default volume for persistent data
-# VOLUME ["/app/data"]
-
-# # Set the default working directory for the container
-# WORKDIR /app
-
-# # Copy the static files into the container
-# COPY static /app/static
-
-# # Copy the templates into the container
-# COPY templates /app/templates
-
-# # Install any additional dependencies required by the project
-# RUN apt-get update && apt-get install -y \
-#     libpq-dev \
-#     libssl-dev \
-#     libffi-dev \
-#     python-dev \
-#     python-setuptools \
-#     python-pip \
-#     python-wheel
-
-# # Install any additional Python packages required by the project
-# RUN pip install \
-#     gunicorn \
-#     whitenoise \
-#     django-storages \
-#     boto3 \
-#     psycopg2-binary
-
-# # Expose the port for the Django development server
-# EXPOSE 8000
-
-# # Define the command to run when the container starts in development mode
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-# # Define the command to run when the container starts in production mode
-# CMD ["gunicorn", "app.wsgi:application", "--workers", "3", "--bind", "0.0.0.0:80"]
-# Use the official Python image
+# Use official Python image
 FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies and build tools for pyaudio
-RUN apt-get update && \
-    apt-get install -y ffmpeg gcc libasound2-dev portaudio19-dev libportaudio2 libportaudiocpp0 libffi-dev && \
-    rm -rf /var/lib/apt/lists/*
+# Install system dependencies (if needed)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Upgrade pip and install Python dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -82,8 +22,16 @@ RUN pip install -r requirements.txt
 # Copy project files
 COPY . .
 
-# Expose Render's default port
-EXPOSE 10000
+# Expose port (adjust based on framework)
+EXPOSE 8000
 
-# Run Streamlit on Render's default port
-CMD ["streamlit", "run", "ecommerce_streamlit_app.py", "--server.port", "10000", "--server.address", "0.0.0.0"]
+# Set default command (adjust based on your framework)
+# Django:
+# CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Flask:
+# CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]
+# Streamlit:
+# CMD ["streamlit", "run", "app.py", "--server.port=8000", "--server.address=0.0.0.0"]
+
+# Example for Django project:
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

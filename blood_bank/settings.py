@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5un7e!b843%#e8wa#%!f5ij)3l@a^n-idr5(1d%rdl(2)oh=u)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','https://blood-donors-c0en.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
