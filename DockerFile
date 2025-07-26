@@ -1,0 +1,61 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Define environment variable
+ENV NAME World
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the command to run when the container starts
+CMD ["python", "app.py"]
+
+# Set the default volume for persistent data
+VOLUME ["/app/data"]
+
+# Set the default working directory for the container
+WORKDIR /app
+
+# Copy the static files into the container
+COPY static /app/static
+
+# Copy the templates into the container
+COPY templates /app/templates
+
+# Install any additional dependencies required by the project
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libssl-dev \
+    libffi-dev \
+    python-dev \
+    python-setuptools \
+    python-pip \
+    python-wheel
+
+# Install any additional Python packages required by the project
+RUN pip install \
+    gunicorn \
+    whitenoise \
+    django-storages \
+    boto3 \
+    psycopg2-binary
+
+# Expose the port for the Django development server
+EXPOSE 8000
+
+# Define the command to run when the container starts in development mode
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# Define the command to run when the container starts in production mode
+CMD ["gunicorn", "app.wsgi:application", "--workers", "3", "--bind", "0.0.0.0:80"]
