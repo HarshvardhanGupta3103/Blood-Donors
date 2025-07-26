@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🩸Blood Bank Management System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+     <link rel="stylesheet" href="https://fontawesome.com/icons">
+    
+</head>
+<body>
+    
+    <div class="main">
+        <div class="firstdiv">
+            <h1>Blood Bank Management System</h1>
+        </div>
+                {% if msg %}
+                   <p style="color: green; font-weight: bold;">{{ msg }}</p>
+                {% endif %}
+                {% if error %}
+                   <p style="color: red; font-weight: bold;">{{error}}</p>
+                {% endif %}
+
+        <div class="seconddiv">
+            <img src="{% static 'images/hand-holding-a-drop-of-blood-world-blood-donor-day-blood-donation-illustration-donor-symbol-blood-donation-symbol-free-png.webp' %}" width="70px">
+            <a href="{% url 'home' %}"><b>Home</b></a>
+            <a href="{% url 'search' %}"><b>Search</b></a>
+            <a href="#"><b>Live Blood Camp</b></a>
+            <a href="{% url 'donor_registration' %}"><b>Donor Register</b></a>
+            <a href="{% url 'admin:index' %}"><b>Admin</b></a>
+           
+            {% if request.session.username %}
+               <a href="{% url 'user_logout' %}"><b>Logout</b></a>
+               <a href="{% url 'account' %}"><b>Account</b></a>
+            
+            {% else %}
+                <a href="{% url 'user_login' %}"><b>Login</b></a>
+            
+            {% endif %}
+
+
+            <a href="{% url 'contact_us' %}"><b>Contact Us</b></a>
+            <a href="{% url 'about_us' %}"><b>About Us</b></a>
+           
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

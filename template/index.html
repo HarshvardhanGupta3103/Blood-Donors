@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        margin-bottom: 50px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+    }
+    
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .hero-content p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+    
+    .cta-btn {
+        background: white;
+        color: #dc3545;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .cta-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        color: #dc3545;
+    }
+    
+    .cta-btn.secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+    
+    .cta-btn.secondary:hover {
+        background: white;
+        color: #dc3545;
+    }
+    
+    .features-section {
+        margin: 50px 0;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border-top: 4px solid #dc3545;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .feature-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .feature-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .stats-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 60px 0;
+        border-radius: 15px;
+        margin: 50px 0;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .stat-item {
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #dc3545;
+        display: block;
+    }
+    
+    .stat-label {
+        font-size: 1.1rem;
+        color: #666;
+        margin-top: 10px;
+    }
+    
+    .emergency-section {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+        padding: 50px 0;
+        border-radius: 15px;
+        text-align: center;
+        margin: 50px 0;
+        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+    }
+    
+    .emergency-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    
+    .emergency-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+    
+    .emergency-btn {
+        background: white;
+        color: #ff6b6b;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .emergency-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        color: #ff6b6b;
+    }
+    
+    .testimonials-section {
+        margin: 50px 0;
+        text-align: center;
+    }
+    
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .testimonial-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    
+    .testimonial-card::before {
+        content: '"';
+        font-size: 4rem;
+        color: #dc3545;
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        font-family: serif;
+    }
+    
+    .testimonial-text {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    .testimonial-author {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 40px;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .features-grid,
+        .stats-grid,
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .emergency-content h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>🩸 Save Lives Today</h1>
+        <p>Your blood donation can save up to 3 lives. Join our community of heroes and make a difference.</p>
+        
+        <div class="cta-buttons">
+            <a href="{% url 'donor_registration' %}" class="cta-btn">
+                <i class="fas fa-user-plus"></i> Become a Donor
+            </a>
+            <a href="{% url 'search' %}" class="cta-btn secondary">
+                <i class="fas fa-search"></i> Find Blood
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section">
+    <h2 class="section-title">Why Choose Our Blood Bank?</h2>
+    <p class="section-subtitle">We provide safe, reliable, and efficient blood banking services</p>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Safe & Secure</h3>
+            <p>All blood donations are thoroughly tested and screened following international safety standards to ensure the highest quality.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3>24/7 Availability</h3>
+            <p>Our blood bank operates round the clock to ensure blood is available whenever and wherever it's needed most.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>Community Network</h3>
+            <p>Join thousands of registered donors in our network, creating a strong community dedicated to saving lives.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Easy Access</h3>
+            <p>Our modern platform makes it simple to register as a donor, search for blood, and manage your donation history.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h3>Health Monitoring</h3>
+            <p>Regular health check-ups for donors and comprehensive medical screening ensure everyone's safety and well-being.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-award"></i>
+            </div>
+            <h3>Certified Quality</h3>
+            <p>Our facility is certified and follows all national and international guidelines for blood collection and storage.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="stats-section">
+    <h2 class="section-title">Our Impact</h2>
+    <div class="stats-grid">
+        <div class="stat-item">
+            <span class="stat-number">10,000+</span>
+            <div class="stat-label">Lives Saved</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">5,000+</span>
+            <div class="stat-label">Registered Donors</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <div class="stat-label">Partner Hospitals</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <div class="stat-label">Emergency Support</div>
+        </div>
+    </div>
+</div>
+
+<!-- Emergency Section -->
+<div class="emergency-section">
+    <div class="emergency-content">
+        <h2>🚨 Emergency Blood Needed?</h2>
+        <p>Don't wait! Search for available donors in your area right now.</p>
+        <a href="{% url 'search' %}" class="emergency-btn">
+            <i class="fas fa-search"></i> Find Blood Now
+        </a>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="testimonials-section">
+    <h2 class="section-title">What Our Community Says</h2>
+    <p class="section-subtitle">Real stories from donors and recipients</p>
+    
+    <div class="testimonials-grid">
+        <div class="testimonial-card">
+            <p class="testimonial-text">
+                Donating blood through this platform was incredibly easy and safe. The staff was professional and the process was smooth. I'm proud to be part of this life-saving community.
+            </p>
+            <div class="testimonial-author">- Rahul Sharma, Regular Donor</div>
+        </div>
+        
+        <div class="testimonial-card">
+            <p class="testimonial-text">
+                When my father needed emergency blood, this system helped us find a donor within minutes. The quick response literally saved his life. Thank you to all the donors!
+            </p>
+            <div class="testimonial-author">- Priya Patel, Grateful Family</div>
+        </div>
+        
+        <div class="testimonial-card">
+            <p class="testimonial-text">
+                As a doctor, I appreciate how well-organized and reliable this blood bank is. The quality control and donor screening processes are excellent.
+            </p>
+            <div class="testimonial-author">- Dr. Amit Kumar, Physician</div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="hero-section" style="padding: 60px 0;">
+    <div class="hero-content">
+        <h2>Ready to Save Lives?</h2>
+        <p>Join our community of heroes today. Every donation counts, every donor matters.</p>
+        
+        <div class="cta-buttons">
+            <a href="{% url 'donor_registration' %}" class="cta-btn">
+                <i class="fas fa-heart"></i> Register Now
+            </a>
+            <a href="{% url 'about_us' %}" class="cta-btn secondary">
+                <i class="fas fa-info-circle"></i> Learn More
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

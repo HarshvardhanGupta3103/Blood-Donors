@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .search-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .search-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .search-banner {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 40px 20px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    .search-banner h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    .search-banner p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+    
+    .search-form {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .form-group {
+        flex: 1;
+        min-width: 250px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #dc3545;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+    
+    .search-btn {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    }
+    
+    .results-section {
+        margin-top: 30px;
+    }
+    
+    .alert {
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    
+    .alert-warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+    
+    .donors-table {
+        width: 100%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+    
+    .donors-table th {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .donors-table td {
+        padding: 15px;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    .donors-table tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .donor-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        border-left: 4px solid #dc3545;
+    }
+    
+    .donor-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .donor-info {
+        color: #666;
+        margin-bottom: 3px;
+    }
+    
+    .blood-group-badge {
+        background: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .criteria-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #17a2b8;
+    }
+    
+    .criteria-info h4 {
+        color: #17a2b8;
+        margin-bottom: 10px;
+    }
+    
+    .criteria-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .criteria-list li {
+        padding: 5px 0;
+        color: #666;
+    }
+    
+    .criteria-list li:before {
+        content: "✓ ";
+        color: #28a745;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+        }
+        
+        .search-banner h1 {
+            font-size: 2rem;
+        }
+        
+        .donors-table {
+            font-size: 14px;
+        }
+        
+        .donors-table th,
+        .donors-table td {
+            padding: 10px 8px;
+        }
+    }
+</style>
+
+<div class="search-container">
+    <!-- Search Banner -->
+    <div class="search-banner">
+        <h1>🔍 Find Blood Donors</h1>
+        <p>Search for eligible blood donors in your area</p>
+    </div>
+
+    <!-- Search Criteria Info -->
+    <div class="criteria-info">
+        <h4>🎯 Search Criteria Applied</h4>
+        <ul class="criteria-list">
+            <li>Age: 18 years or older</li>
+            <li>Health: No medical conditions (diseases, allergies, heart conditions, etc.)</li>
+            <li>Donation Eligibility: At least 10 days since last donation</li>
+            <li>Location: Matches your specified area</li>
+        </ul>
+    </div>
+
+    <!-- Search Form -->
+    <div class="search-form">
+        <form action="{% url 'searchDta' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="blood_group">🩸 Blood Group Required</label>
+                    <select name="blood_group" id="blood_group" class="form-control" required>
+                        <option value="" disabled selected>Select the blood group</option>
+                        <option value="A+">A+ (A Positive)</option>
+                        <option value="A-">A- (A Negative)</option>
+                        <option value="B+">B+ (B Positive)</option>
+                        <option value="B-">B- (B Negative)</option>
+                        <option value="AB+">AB+ (AB Positive)</option>
+                        <option value="AB-">AB- (AB Negative)</option>
+                        <option value="O+">O+ (O Positive)</option>
+                        <option value="O-">O- (O Negative)</option>
+                        <option value="HH">HH (Bombay Blood Group)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="home_address">📍 Location/Area</label>
+                    <input type="text" 
+                           name="home_address" 
+                           id="home_address"
+                           class="form-control" 
+                           placeholder="e.g. Bholaram, Vijay Nagar, Palasia" 
+                           required>
+                </div>
+            </div>
+            
+            <button type="submit" class="search-btn">
+                🔍 Search Donors
+            </button>
+        </form>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+        {% if message %}
+            <div class="alert alert-warning">
+                <strong>ℹ️ No Results:</strong> {{ message }}
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="alert alert-danger">
+                <strong>❌ Error:</strong> {{ error }}
+            </div>
+        {% endif %}
+
+        {% if donors %}
+            <div class="alert alert-success">
+                <strong>✅ Success:</strong> Found {{ donors|length }} eligible donor{{ donors|length|pluralize }} matching your criteria!
+            </div>
+
+            <!-- Desktop Table View -->
+            <div class="d-none d-md-block">
+                <table class="donors-table">
+                    <thead>
+                        <tr>
+                            <th>👤 Donor Name</th>
+                            <th>🩸 Blood Group</th>
+                            <th>📞 Phone Number</th>
+                            <th>📍 Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donor in donors %}
+                        <tr>
+                            <td><strong>{{ donor.name }}</strong></td>
+                            <td><span class="blood-group-badge">{{ donor.blood_group }}</span></td>
+                            <td>{{ donor.phone_number }}</td>
+                            <td>{{ donor.home_address }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="d-block d-md-none">
+                {% for donor in donors %}
+                <div class="donor-card">
+                    <div class="donor-name">👤 {{ donor.name }}</div>
+                    <div class="donor-info">🩸 <span class="blood-group-badge">{{ donor.blood_group }}</span></div>
+                    <div class="donor-info">📞 {{ donor.phone_number }}</div>
+                    <div class="donor-info">📍 {{ donor.home_address }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-card">
+                <h3>📊 Search Results</h3>
+                <p><strong>{{ donors|length }}</strong> eligible donor{{ donors|length|pluralize }} found</p>
+                <small>All donors meet the health and eligibility criteria</small>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Bootstrap CSS for responsive utilities -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}

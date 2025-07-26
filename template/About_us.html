@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        margin-bottom: 50px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+    }
+    
+    .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .about-hero p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+    }
+    
+    .mission-section {
+        margin: 50px 0;
+    }
+    
+    .mission-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .mission-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border-top: 4px solid #dc3545;
+    }
+    
+    .mission-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .mission-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .mission-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .mission-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .story-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 60px 40px;
+        border-radius: 15px;
+        margin: 50px 0;
+    }
+    
+    .story-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .story-content h2 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+    
+    .story-content p {
+        color: #666;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+    
+    .team-section {
+        margin: 50px 0;
+        text-align: center;
+    }
+    
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .team-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .team-avatar {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .team-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .team-role {
+        color: #dc3545;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    
+    .team-description {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .values-section {
+        margin: 50px 0;
+    }
+    
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .value-item {
+        text-align: center;
+        padding: 30px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .value-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .value-icon {
+        font-size: 3rem;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+    
+    .value-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .value-description {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 40px;
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 60px 40px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 50px 0;
+        box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+    }
+    
+    .cta-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    
+    .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+    
+    .cta-btn {
+        background: white;
+        color: #dc3545;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        margin: 0 10px;
+    }
+    
+    .cta-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        color: #dc3545;
+    }
+    
+    @media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .mission-grid,
+        .team-grid,
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .story-section {
+            padding: 40px 20px;
+        }
+        
+        .cta-section {
+            padding: 40px 20px;
+        }
+        
+        .cta-section h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="about-hero">
+    <h1>🏥 About Our Blood Bank</h1>
+    <p>Dedicated to saving lives through safe and reliable blood banking services</p>
+</div>
+
+<!-- Mission Section -->
+<div class="mission-section">
+    <h2 class="section-title">Our Mission</h2>
+    <p class="section-subtitle">Committed to excellence in blood banking and community health</p>
+    
+    <div class="mission-grid">
+        <div class="mission-card">
+            <div class="mission-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3>Save Lives</h3>
+            <p>Our primary mission is to save lives by ensuring a safe, adequate, and reliable blood supply for patients in need.</p>
+        </div>
+        
+        <div class="mission-card">
+            <div class="mission-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Ensure Safety</h3>
+            <p>We maintain the highest safety standards in blood collection, testing, processing, and distribution.</p>
+        </div>
+        
+        <div class="mission-card">
+            <div class="mission-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>Build Community</h3>
+            <p>We foster a strong community of voluntary donors committed to helping others in times of need.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Our Story Section -->
+<div class="story-section">
+    <div class="story-content">
+        <h2>Our Story</h2>
+        <p>
+            Founded with the vision of creating a comprehensive blood banking system, our organization has been at the forefront 
+            of modern healthcare for over a decade. We began as a small community initiative and have grown into a trusted 
+            network serving thousands of patients and donors.
+        </p>
+        <p>
+            Our blood bank is a vital facility that collects, tests, processes, and stores blood and its components for medical use. 
+            We play a crucial role in providing safe blood for transfusions, particularly for patients undergoing surgery, trauma care, 
+            or those with certain medical conditions.
+        </p>
+        <p>
+            We actively recruit voluntary donors, ensuring that donated blood is thoroughly screened for infectious diseases and 
+            properly typed to match recipients. The collected blood is separated into its components—such as red blood cells, 
+            plasma, and platelets—each tailored to meet specific patient needs.
+        </p>
+    </div>
+</div>
+
+<!-- Values Section -->
+<div class="values-section">
+    <h2 class="section-title">Our Core Values</h2>
+    <p class="section-subtitle">The principles that guide everything we do</p>
+    
+    <div class="values-grid">
+        <div class="value-item">
+            <div class="value-icon">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="value-title">Compassion</div>
+            <div class="value-description">We approach every interaction with empathy and understanding</div>
+        </div>
+        
+        <div class="value-item">
+            <div class="value-icon">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <div class="value-title">Excellence</div>
+            <div class="value-description">We strive for the highest standards in all our services</div>
+        </div>
+        
+        <div class="value-item">
+            <div class="value-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="value-title">Integrity</div>
+            <div class="value-description">We operate with honesty and transparency in all our dealings</div>
+        </div>
+        
+        <div class="value-item">
+            <div class="value-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="value-title">Innovation</div>
+            <div class="value-description">We embrace new technologies to improve our services</div>
+        </div>
+        
+        <div class="value-item">
+            <div class="value-icon">
+                <i class="fas fa-globe"></i>
+            </div>
+            <div class="value-title">Community</div>
+            <div class="value-description">We are committed to serving our community's health needs</div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Section -->
+<div class="team-section">
+    <h2 class="section-title">Our Leadership Team</h2>
+    <p class="section-subtitle">Experienced professionals dedicated to our mission</p>
+
+
+    
+    
+    <div class="team-grid">
+        <div class="team-card">
+            <div class="team-avatar">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="team-name">Dr. Mayank Kumar</div>
+            <div class="team-role">Medical Director</div>
+            <div class="team-description">
+                Leading hematologist with 20+ years of experience in blood banking and transfusion medicine.
+            </div>
+        </div>
+        
+        <div class="team-card">
+            <div class="team-avatar">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="team-name">Priya Sharma</div>
+            <div class="team-role">Operations Manager</div>
+            <div class="team-description">
+                Expert in healthcare operations with a focus on quality management and donor relations.
+            </div>
+        </div>
+        
+        <div class="team-card">
+            <div class="team-avatar">
+                <i class="fas fa-user-nurse"></i>
+            </div>
+            <div class="team-name">Nurse Anita Patel</div>
+            <div class="team-role">Chief Nursing Officer</div>
+            <div class="team-description">
+                Experienced nursing professional specializing in blood collection and donor care.
+            </div>
+        </div>
+        
+        <div class="team-card">
+            <div class="team-avatar">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <div class="team-name">Dr. Amit Singh</div>
+            <div class="team-role">Laboratory Director</div>
+            <div class="team-description">
+                Pathologist ensuring the highest standards in blood testing and quality control.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="cta-section">
+    <h2>Join Our Life-Saving Mission</h2>
+    <p>Be part of our community and help save lives through blood donation</p>
+    
+    <a href="{% url 'donor_registration' %}" class="cta-btn">
+        <i class="fas fa-user-plus"></i> Become a Donor
+    </a>
+    <a href="{% url 'contact_us' %}" class="cta-btn">
+        <i class="fas fa-envelope"></i> Contact Us
+    </a>
+</div>
+
+{% endblock %}
