@@ -28,6 +28,16 @@ class DonorRegistration(models.Model):
         db_table = "donorList"
 
 
+class contactus(models.Model):
+    name=models.CharField(max_length=100)
+    email=models.EmailField()
+    subject=models.TextField()
+    message=models.TextField()
+    phone=models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name 
 
-
+    class Meta:  # Capital "M" here is important
+        db_table = "contact_us"
 

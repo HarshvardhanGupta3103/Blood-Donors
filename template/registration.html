@@ -2,114 +2,1276 @@
 {% load static %}
 
 {% block content %}
+<style>
+    /* Modern color scheme with blood donation theme */
+    :root {
+        --primary-color: #dc2626;
+        --primary-dark: #991b1b;
+        --primary-light: #fca5a5;
+        --secondary-color: #0ea5e9;
+        --accent-color: #f59e0b;
+        --light-color: #f8fafc;
+        --dark-color: #1e293b;
+        --gray-light: #f1f5f9;
+        --gray-medium: #e2e8f0;
+        --gray-dark: #64748b;
+        --success-color: #059669;
+        --warning-color: #d97706;
+        --error-color: #dc2626;
+        --glass-bg: rgba(255, 255, 255, 0.25);
+        --glass-border: rgba(255, 255, 255, 0.18);
+    }
+    
+    * {
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+    
+    .registration-container {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Animated background elements */
+    .registration-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.2) 0%, transparent 50%);
+        animation: backgroundShift 20s ease-in-out infinite;
+    }
+    
+    @keyframes backgroundShift {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(180deg); }
+    }
+    
+    /* Floating particles */
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        animation: float 15s infinite linear;
+    }
+    
+    .particle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .particle:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; }
+    .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 4s; }
+    .particle:nth-child(4) { top: 80%; left: 70%; animation-delay: 6s; }
+    .particle:nth-child(5) { top: 30%; left: 50%; animation-delay: 8s; }
+    
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+    
+    .registration-wrapper {
+        position: relative;
+        z-index: 10;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .registration-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: slideUp 0.6s ease-out;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .registration-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .registration-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: 
+            radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+        animation: headerPattern 25s linear infinite;
+        opacity: 0.6;
+    }
+    
+    @keyframes headerPattern {
+        0% { transform: rotate(0deg) scale(1); }
+        100% { transform: rotate(360deg) scale(1.1); }
+    }
+    
+    .registration-icon {
+        width: 90px;
+        height: 90px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 2.8rem;
+        position: relative;
+        z-index: 1;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .registration-icon:hover {
+        transform: scale(1.1) rotate(10deg);
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .registration-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(45deg, #ffffff, #f1f5f9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .registration-subtitle {
+        opacity: 0.95;
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 1;
+        font-weight: 400;
+    }
+    
+    .registration-body {
+        padding: 40px 30px;
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .form-section {
+        margin-bottom: 40px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--gray-medium);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-row.single {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-group {
+        margin-bottom: 24px;
+        position: relative;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 8px;
+        display: block;
+        font-size: 0.95rem;
+        transition: color 0.3s ease;
+    }
+    
+    .form-label.required::after {
+        content: ' *';
+        color: var(--error-color);
+        font-weight: bold;
+    }
+    
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-control {
+        border: 2px solid var(--gray-medium);
+        border-radius: 16px;
+        padding: 18px 50px 18px 20px;
+        font-size: 16px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--light-color);
+        width: 100%;
+        font-family: inherit;
+        font-weight: 500;
+        color: var(--dark-color);
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 
+            0 0 0 4px rgba(220, 38, 38, 0.1),
+            0 4px 12px rgba(220, 38, 38, 0.15);
+        background: white;
+        transform: translateY(-2px);
+    }
+    
+    .form-control:hover {
+        border-color: var(--primary-color);
+        background: white;
+        transform: translateY(-1px);
+    }
+    
+    .form-control.error {
+        border-color: var(--error-color);
+        background: #fef2f2;
+    }
+    
+    .form-control.success {
+        border-color: var(--success-color);
+        background: #f0fdf4;
+    }
+    
+    select.form-control {
+        cursor: pointer;
+        padding-right: 50px;
+    }
+    
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+        padding: 20px;
+    }
+    
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        color: var(--gray-dark);
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .blood-group-selector {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 8px;
+    }
+    
+    .blood-type-option {
+        position: relative;
+    }
+    
+    .blood-type-option input[type="radio"] {
+        display: none;
+    }
+    
+    .blood-type-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 8px;
+        border: 2px solid var(--gray-medium);
+        border-radius: 12px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .blood-type-option input[type="radio"]:checked + .blood-type-label {
+        border-color: var(--primary-color);
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+    
+    .blood-type-label:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .file-upload-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .file-upload-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .file-upload-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px;
+        border: 2px dashed var(--gray-medium);
+        border-radius: 16px;
+        background: var(--light-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: var(--gray-dark);
+    }
+    
+    .file-upload-label:hover {
+        border-color: var(--primary-color);
+        background: rgba(220, 38, 38, 0.05);
+        color: var(--primary-color);
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        border: none;
+        border-radius: 16px;
+        padding: 20px 40px;
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        width: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        margin-top: 20px;
+    }
+    
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(220, 38, 38, 0.4);
+        background: linear-gradient(135deg, #ef4444, var(--primary-color));
+    }
+    
+    .submit-btn:active {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+    }
+    
+    .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .submit-btn .btn-text {
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Alert styles */
+    .alert-custom {
+        border: none;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        animation: alertSlide 0.4s ease-out;
+    }
+    
+    @keyframes alertSlide {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .alert-success-custom {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
+        border-left: 4px solid var(--success-color);
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+    }
+    
+    .alert-error-custom {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        color: #991b1b;
+        border-left: 4px solid var(--error-color);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+    
+    .progress-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+    
+    .progress-step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--gray-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--gray-dark);
+        transition: all 0.3s ease;
+    }
+    
+    .progress-step.active {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .progress-step.completed {
+        background: var(--success-color);
+        color: white;
+    }
+    
+    .progress-line {
+        width: 60px;
+        height: 2px;
+        background: var(--gray-medium);
+        transition: all 0.3s ease;
+    }
+    
+    .progress-line.completed {
+        background: var(--success-color);
+    }
+    
+    /* Loading state */
+    .loading {
+        position: relative;
+        pointer-events: none;
+    }
+    
+    .loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .registration-container {
+            padding: 20px 15px;
+        }
+        
+        .registration-wrapper {
+            max-width: 100%;
+        }
+        
+        .registration-card {
+            border-radius: 20px;
+        }
+        
+        .registration-header {
+            padding: 30px 25px;
+        }
+        
+        .registration-body {
+            padding: 30px 25px;
+        }
+        
+        .registration-title {
+            font-size: 1.8rem;
+        }
+        
+        .registration-icon {
+            width: 75px;
+            height: 75px;
+            font-size: 2.2rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .blood-group-selector {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .form-control {
+            padding: 16px 45px 16px 18px;
+            font-size: 16px;
+        }
+        
+        .submit-btn {
+            padding: 18px 30px;
+            font-size: 16px;
+        }
+        
+        .progress-step {
+            width: 35px;
+            height: 35px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-line {
+            width: 40px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .registration-container {
+            padding: 15px 10px;
+        }
+        
+        .registration-header {
+            padding: 25px 20px;
+        }
+        
+        .registration-body {
+            padding: 25px 20px;
+        }
+        
+        .registration-icon {
+            width: 65px;
+            height: 65px;
+            font-size: 1.8rem;
+        }
+        
+        .registration-title {
+            font-size: 1.6rem;
+        }
+        
+        .registration-subtitle {
+            font-size: 1rem;
+        }
+        
+        .blood-group-selector {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+        }
+        
+        .progress-indicator {
+            gap: 4px;
+        }
+        
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            font-size: 0.8rem;
+        }
+        
+        .progress-line {
+            width: 30px;
+        }
+    }
+</style>
 
-{% if msg %}
-    <p style="color: green; font-weight: bold;">{{ msg }}</p>
-{% endif %}
-
-{% if error %}
-     <p style="color: rgb(128, 17, 0); font-weight: bold;">{{ error }}</p>
-{% endif %}
-
-        <h1 style="text-align: center;">Blood Donor Registration Form</h1>
-        <div class="main1">
-            <form action="{% url 'donor_registration' %}" class="form" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <label for="name">Name:</label><br>
-    <input type="text" name="name" placeholder="name" required style="width: 1000px; height: 40px;"><br>
-
-    <label for="gender">Gender:</label><br>
-    <select name="gender" id="gender" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>----------</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select><br>
-
-    <label for="date">Birth_Date:</label><br>
-    <input type="date" name="birth_date" style="width: 1000px; height: 40px;" required><br><br>
-
-    <label for="blood_group">Blood Group:</label><br>
-    <select name="blood_group" id="blood_group" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>----------</option>
-        <option value="A+">A+</option>
-        <option value="A-">A-</option>
-        <option value="B+">B+</option>
-        <option value="B-">B-</option>
-        <option value="AB+">AB+</option>
-        <option value="AB-">AB-</option>
-        <option value="O+">O+</option>
-        <option value="O-">O-</option>
-        <option value="Hh">Hh (Bombay blood group)</option>
-    </select><br>
-
-    <label for="phone_number">Phone number:</label><br>
-    <input type="text" name="phone_number" placeholder="mobile number" maxlength="10" style="width: 1000px; height: 40px;" required><br>
-
-    <label for="email">Email:</label><br>
-    <input type="email" name="email" placeholder="email" style="width: 1000px; height: 40px;" required><br>
-
-    <label for="Username">Username:</label><br>
-    <input type="username" name="username" placeholder="username" style="width: 1000px; height: 40px;" required><br>
-
-    <label for="password">password:</label><br>
-    <input type="password" name="password" placeholder="password" style="width: 1000px; height: 40px;" required><br>
-
-
-
-
-    <label for="occupation">Occupation:</label><br>
-    <input type="text" name="occupation" placeholder="text" style="width: 1000px; height: 40px;" required><br>
-
-    <label for="home_address">Home address:</label><br>
-    <textarea name="home_address" placeholder="Write something.." style="height:200px; width: 1000px;" required></textarea><br>
-
-    <label for="last_donate_date">Last donate date (Optional - leave empty if first time donor):</label><br>
-    <input type="date" name="last_donate_date" style="width: 1000px; height: 40px;"><br>
-
-    <label for="any_disease">Any diseases:</label><br>
-    <select name="any_disease" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>------</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select><br>
-
-    <label for="allergies">Allergies:</label><br>
-    <select name="allergies" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>------</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select><br>
-
-    <label for="heart_condition">Heart Related Diseases:</label><br>
-    <select name="heart_condition" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>------</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select><br>
-
-    <label for="bleeding_disorder">Bleeding disorders:</label><br>
-    <select name="bleeding_disorder" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>------</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select><br>
-
-    <label for="hiv_hcv">HIV/HCV:</label><br>
-    <select name="hiv_hcv" style="width: 1000px; height: 40px;" required>
-        <option value="" disabled selected>------</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select><br>
-
-    <label for="aadhar_card">Upload Aadhar card (Optional):</label><br>
-    <input type="file" name="aadhar_card" style="width: 1000px; height: 40px;"><br>
-
-    <button type="submit" style="margin-bottom: 15px;">Submit</button>
-</form>
-
+<div class="registration-container">
+    <!-- Floating particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    
+    <div class="registration-wrapper">
+        <div class="registration-card">
+            <div class="registration-header">
+                <div class="registration-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 class="registration-title">Join Our Life-Saving Community</h1>
+                <p class="registration-subtitle">Register as a blood donor and help save lives in your community</p>
+            </div>
+            
+            <div class="registration-body">
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-step active">1</div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">2</div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">3</div>
+                </div>
+                
+                <!-- Alert Messages -->
+                {% if msg %}
+                    <div class="alert-custom alert-success-custom">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ msg }}</span>
+                    </div>
+                {% endif %}
+                
+                {% if error %}
+                    <div class="alert-custom alert-error-custom">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>{{ error }}</span>
+                    </div>
+                {% endif %}
+                
+                <form action="{% url 'donor_registration' %}" method="post" enctype="multipart/form-data" id="registrationForm">
+                    {% csrf_token %}
+                    
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            Personal Information
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name" class="form-label required">Full Name</label>
+                                <div class="input-wrapper">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           placeholder="Enter your full name"
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender" class="form-label required">Gender</label>
+                                <div class="input-wrapper">
+                                    <select name="gender" id="gender" class="form-control" required>
+                                        <option value="" disabled selected>Select your gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-venus-mars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birth_date" class="form-label required">Date of Birth</label>
+                                <div class="input-wrapper">
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="birth_date" 
+                                           name="birth_date" 
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="occupation" class="form-label required">Occupation</label>
+                                <div class="input-wrapper">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="occupation" 
+                                           name="occupation" 
+                                           placeholder="Enter your occupation"
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-address-book"></i>
+                            Contact Information
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone_number" class="form-label required">Phone Number</label>
+                                <div class="input-wrapper">
+                                    <input type="tel" 
+                                           class="form-control" 
+                                           id="phone_number" 
+                                           name="phone_number" 
+                                           placeholder="Enter your phone number"
+                                           maxlength="10" 
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label required">Email Address</label>
+                                <div class="input-wrapper">
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           name="email" 
+                                           placeholder="Enter your email address"
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row single">
+                            <div class="form-group">
+                                <label for="home_address" class="form-label required">Home Address</label>
+                                <div class="input-wrapper">
+                                    <textarea class="form-control" 
+                                              id="home_address" 
+                                              name="home_address" 
+                                              placeholder="Enter your complete home address"
+                                              required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-key"></i>
+                            Account Information
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="username" class="form-label required">Username</label>
+                                <div class="input-wrapper">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="username" 
+                                           name="username" 
+                                           placeholder="Choose a username"
+                                           required>
+                                    <div class="input-icon">
+                                        <i class="fas fa-user-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password" class="form-label required">Password</label>
+                                <div class="input-wrapper">
+                                    <input type="password" 
+                                           class="form-control" 
+                                           id="password" 
+                                           name="password" 
+                                           placeholder="Create a strong password"
+                                           required>
+                                    <div class="input-icon password-toggle" onclick="togglePassword()">
+                                        <i class="fas fa-eye" id="passwordIcon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medical Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-heartbeat"></i>
+                            Medical Information
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label required">Blood Group</label>
+                            <div class="blood-group-selector">
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_a_pos" name="blood_group" value="A+" required>
+                                    <label for="blood_a_pos" class="blood-type-label">A+</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_a_neg" name="blood_group" value="A-" required>
+                                    <label for="blood_a_neg" class="blood-type-label">A-</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_b_pos" name="blood_group" value="B+" required>
+                                    <label for="blood_b_pos" class="blood-type-label">B+</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_b_neg" name="blood_group" value="B-" required>
+                                    <label for="blood_b_neg" class="blood-type-label">B-</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_ab_pos" name="blood_group" value="AB+" required>
+                                    <label for="blood_ab_pos" class="blood-type-label">AB+</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_ab_neg" name="blood_group" value="AB-" required>
+                                    <label for="blood_ab_neg" class="blood-type-label">AB-</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_o_pos" name="blood_group" value="O+" required>
+                                    <label for="blood_o_pos" class="blood-type-label">O+</label>
+                                </div>
+                                <div class="blood-type-option">
+                                    <input type="radio" id="blood_o_neg" name="blood_group" value="O-" required>
+                                    <label for="blood_o_neg" class="blood-type-label">O-</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="last_donate_date" class="form-label">Last Donation Date</label>
+                                <div class="input-wrapper">
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="last_donate_date" 
+                                           name="last_donate_date">
+                                    <div class="input-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <small style="color: var(--gray-dark); font-size: 0.85rem;">Leave empty if you're a first-time donor</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Health Screening Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-stethoscope"></i>
+                            Health Screening
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="any_disease" class="form-label required">Any Chronic Diseases?</label>
+                                <div class="input-wrapper">
+                                    <select name="any_disease" id="any_disease" class="form-control" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-notes-medical"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="allergies" class="form-label required">Any Allergies?</label>
+                                <div class="input-wrapper">
+                                    <select name="allergies" id="allergies" class="form-control" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="heart_condition" class="form-label required">Heart Related Conditions?</label>
+                                <div class="input-wrapper">
+                                    <select name="heart_condition" id="heart_condition" class="form-control" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bleeding_disorder" class="form-label required">Bleeding Disorders?</label>
+                                <div class="input-wrapper">
+                                    <select name="bleeding_disorder" id="bleeding_disorder" class="form-control" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hiv_hcv" class="form-label required">HIV/HCV Status?</label>
+                                <div class="input-wrapper">
+                                    <select name="hiv_hcv" id="hiv_hcv" class="form-control" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="yes">Positive</option>
+                                        <option value="no">Negative</option>
+                                    </select>
+                                    <div class="input-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Upload Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-upload"></i>
+                            Document Upload
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label for="aadhar_card" class="form-label">Aadhar Card (Optional)</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" 
+                                       class="file-upload-input" 
+                                       id="aadhar_card" 
+                                       name="aadhar_card" 
+                                       accept=".pdf,.jpg,.jpeg,.png">
+                                <label for="aadhar_card" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Click to upload Aadhar Card or drag and drop</span>
+                                </label>
+                            </div>
+                            <small style="color: var(--gray-dark); font-size: 0.85rem;">Supported formats: PDF, JPG, PNG (Max 5MB)</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitButton">
+                        <span class="btn-text">Complete Registration</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-{% endblock %}
+</div>
 
+<script>
+// Enhanced JavaScript functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const registrationForm = document.getElementById('registrationForm');
+    const submitButton = document.getElementById('submitButton');
+    const progressSteps = document.querySelectorAll('.progress-step');
+    const progressLines = document.querySelectorAll('.progress-line');
+    
+    // Password toggle functionality
+    window.togglePassword = function() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.className = 'fas fa-eye-slash';
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.className = 'fas fa-eye';
+        }
+    };
+    
+    // Form validation
+    function validateField(input, minLength = 1) {
+        const value = input.value.trim();
+        if (value.length >= minLength) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            return true;
+        } else {
+            input.classList.remove('success');
+            input.classList.add('error');
+            return false;
+        }
+    }
+    
+    // Real-time validation for text inputs
+    const textInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+    textInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            const minLength = input.name === 'phone_number' ? 10 : 
+                             input.name === 'password' ? 6 : 2;
+            validateField(input, minLength);
+        });
+    });
+    
+    // Phone number validation
+    const phoneInput = document.getElementById('phone_number');
+    phoneInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+        validateField(this, 10);
+    });
+    
+    // Progress indicator update
+    function updateProgress(step) {
+        progressSteps.forEach((stepEl, index) => {
+            if (index < step) {
+                stepEl.classList.add('completed');
+                stepEl.classList.remove('active');
+            } else if (index === step) {
+                stepEl.classList.add('active');
+                stepEl.classList.remove('completed');
+            } else {
+                stepEl.classList.remove('active', 'completed');
+            }
+        });
+        
+        progressLines.forEach((line, index) => {
+            if (index < step) {
+                line.classList.add('completed');
+            } else {
+                line.classList.remove('completed');
+            }
+        });
+    }
+    
+    // Form section visibility based on scroll
+    const formSections = document.querySelectorAll('.form-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const sectionIndex = Array.from(formSections).indexOf(entry.target);
+                if (sectionIndex < 3) {
+                    updateProgress(sectionIndex);
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    formSections.forEach(section => {
+        observer.observe(section);
+    });
+    
+    // File upload handling
+    const fileInput = document.getElementById('aadhar_card');
+    const fileLabel = document.querySelector('.file-upload-label span');
+    
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const fileName = this.files[0].name;
+            fileLabel.textContent = `Selected: ${fileName}`;
+            fileLabel.parentElement.style.borderColor = 'var(--success-color)';
+            fileLabel.parentElement.style.background = 'rgba(5, 150, 105, 0.1)';
+        }
+    });
+    
+    // Form submission with loading state
+    registrationForm.addEventListener('submit', function(e) {
+        // Validate all required fields
+        const requiredFields = document.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            showNotification('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        // Show loading state
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        submitButton.querySelector('.btn-text').textContent = 'Processing Registration...';
+        
+        // Update progress to final step
+        updateProgress(2);
+        progressSteps[2].classList.add('completed');
+    });
+    
+    // Enhanced notification system
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert-custom alert-${type}-custom`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        const registrationBody = document.querySelector('.registration-body');
+        const existingAlert = registrationBody.querySelector('.alert-custom');
+        
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+        
+        registrationBody.insertBefore(notification, registrationBody.firstChild);
+        
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            notification.style.transition = 'all 0.4s ease';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-10px)';
+            setTimeout(() => notification.remove(), 400);
+        }, 4000);
+    }
+    
+    // Auto-hide existing alerts
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert-custom');
+        alerts.forEach(function(alert) {
+            alert.style.transition = 'all 0.4s ease';
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateY(-10px)';
+            setTimeout(() => alert.remove(), 400);
+        });
+    }, 5000);
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            registrationForm.dispatchEvent(new Event('submit'));
+        }
+    });
+    
+    // Focus management
+    document.getElementById('name').focus();
+    
+    // Add smooth transitions to form elements
+    const formElements = document.querySelectorAll('.form-control, .submit-btn, .blood-type-label');
+    formElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            if (!this.matches(':focus') && !this.matches('.blood-type-label')) {
+                this.style.transform = 'translateY(-1px)';
+            }
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            if (!this.matches(':focus') && !this.matches('.blood-type-label')) {
+                this.style.transform = 'translateY(0)';
+            }
+        });
+    });
+    
+    // Blood group selection animation
+    const bloodTypeLabels = document.querySelectorAll('.blood-type-label');
+    bloodTypeLabels.forEach(label => {
+        label.addEventListener('click', function() {
+            bloodTypeLabels.forEach(l => l.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+});
+
+// Performance optimization - Intersection Observer for animations
+if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    });
+    
+    document.querySelectorAll('.registration-card, .particle').forEach(el => {
+        observer.observe(el);
+    });
+}
+</script>
+{% endblock %}

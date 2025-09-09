@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout
 from django.contrib import messages
-from .models import DonorRegistration
+from .models import DonorRegistration , contactus
 from django.contrib.auth.hashers import make_password, check_password
 from datetime import date, timedelta
 from django.db.models import Q
@@ -265,3 +265,19 @@ def searchDta(request):
     
     # For non-POST requests, simply render the search form with no results
     return render(request, 'search.html', {'donors': None})
+
+
+
+
+def contact_usfrom(request):
+    if request.method== 'POST':
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        subject=request.POST.get('subject')
+        message=request.POST.get('message')
+        phone=request.POST.get('phone')
+        
+        contact=contactus(name=name,email=email,subject=subject,message=message,phone=phone)
+        contact.save()
+        return render(request,"contact_us.html",{'msg':'Your message has been sent'})
+    return render(request, "contact_us.html",{'error':'Your message has not been sent'})

@@ -8,6 +8,7 @@ urlpatterns = [
     path("registration",views.registration,name="donor_registration"),
     path("contact_us",views.contact_us,name='contact_us'),
     path("about_us",views.about_us,name='about_us'),
+    path("contact_usfrom",views.contact_usfrom,name='contact_usfrom'),
 
     # path('login',views.login,name='login'),
     

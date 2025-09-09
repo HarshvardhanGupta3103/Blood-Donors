@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DonorRegistration
+from .models import *
 
 @admin.register(DonorRegistration)
 class DonorRegistrationAdmin(admin.ModelAdmin):
@@ -22,3 +22,8 @@ class DonorRegistrationAdmin(admin.ModelAdmin):
             'fields': ('aadhar_card',)
         }),
     )  
+    
+    
+@admin.register(contactus)
+class contactusAdmin(admin.ModelAdmin):
+    list_display = ['name', 'subject', 'email', 'phone', 'message']
